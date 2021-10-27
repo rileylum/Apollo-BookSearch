@@ -45,7 +45,8 @@ const resolvers = {
             return {token, user};
         },
 
-        saveBook: async(_, {book: body}, context) => {
+        saveBook: async(_, {book}, context) => {
+            
             try {
                 const user = await User.findOneAndUpdate(
                     {_id: context.user._id},
