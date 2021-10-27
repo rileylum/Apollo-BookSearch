@@ -15,7 +15,7 @@ module.exports = {
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-    console.log("Token: ", token);
+ 
     if (!token) {
       // OLD REST ROUTE: return res.status(400).json({ message: 'You have no token!' });
       return req;
