@@ -9,6 +9,7 @@ const resolvers = {
         },
 
         me: async(_, __, context) => {
+            console.log(context.user);
             if (context.user) {
                 return User.findOne({_id: context.user._id}).populate('savedBooks')
             }
