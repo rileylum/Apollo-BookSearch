@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
+import { saveBookIds } from '../utils/localStorage';
 import { ADD_USER } from '../utils/mutations';
 
 const SignupForm = () => {
@@ -33,7 +34,9 @@ const SignupForm = () => {
 
     try {
       const { data } = await addUser({variables: {...userFormData}})
-      console.log(data.addUser.token);
+      
+      saveBookIds([]);
+
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);

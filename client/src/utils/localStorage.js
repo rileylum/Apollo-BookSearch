@@ -14,6 +14,14 @@ export const saveBookIds = (bookIdArr) => {
   }
 };
 
+export const loadUserBookIds = (savedBookArr, bookId) => {
+  var bookIdArr = [];
+  for (let i=0; i <savedBookArr.length; i++) {
+    bookIdArr.push(savedBookArr[i][bookId])
+  }
+  localStorage.setItem('saved_books', JSON.stringify(bookIdArr))
+};
+
 export const removeBookId = (bookId) => {
   const savedBookIds = localStorage.getItem('saved_books')
     ? JSON.parse(localStorage.getItem('saved_books'))
