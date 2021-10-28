@@ -43,6 +43,7 @@ export const REMOVE_BOOK = gql`
             username
             email
             savedBooks {
+                _id
                 bookId
                 authors
                 description
