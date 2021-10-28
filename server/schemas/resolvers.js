@@ -1,13 +1,15 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book } = require('../models');
+const { User } = require('../models');
 const {signToken} = require('../utils/auth');
 
 const resolvers = {
+    // QUERIES
     Query: {
+        // GET A SPECIFIC USER BY USERNAME
         user: async(_, {username}) => {
             return User.findOne({username}).populate('savedBooks')
         },
-
+        // GET THE CURRENTLY LOGGED IN USER FROM TOKEN STORED IN CONTEXT (provided by authMiddleware)
         me: async(_, __, context) => {
             console.log(context.user);
             if (context.user) {
@@ -15,8 +17,10 @@ const resolvers = {
             }
         }
     },
-
+    // MUTATIONS
     Mutation: {
+        // GET THE REQUESTED USER AND PERFORM AUTH TO CONFIRM DETAILS
+        // CREATE TOKEN FOR AUTH
         login: async(_, {email, password}) => {
             const user = await User.findOne({email});
 
@@ -34,7 +38,8 @@ const resolvers = {
 
             return {token, user};
         },
-
+        // CREATE NEW USER
+        // CREATE TOKEN FOR AUTH
         addUser: async(_, {username, email, password}) => {
             const user = await User.create({username, email, password});
 
@@ -44,9 +49,8 @@ const resolvers = {
             const token = signToken(user);
             return {token, user};
         },
-
+        // ADD BOOK TO USERS SAVEDBOOKS LIST
         saveBook: async(_, {book}, context) => {
-            
             try {
                 const user = await User.findOneAndUpdate(
                     {_id: context.user._id},
@@ -59,7 +63,7 @@ const resolvers = {
                 throw new AuthenticationError("An unexpected error occured")
             }
         },
-
+        // REMOVE BOOK FROM USERS SAVEDBOOKS LIST
         removeBook: async(_, {bookId}, context) => {
             try {
                 const user = await User.findOneAndUpdate(
